@@ -17,5 +17,5 @@ calc s =
   in printTree (eval e)
 
 -- ghc Calculator.hs
--- echo "1+2*3" | ./Calculator
+-- echo "1+2*3/4" | ./Calculator
 
