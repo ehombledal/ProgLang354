@@ -7,6 +7,11 @@ module AbsNumbers where
 
 
 
-data Exp = Plus Exp Exp | Sub Exp Exp | Times Exp Exp | Num Integer
+data Exp
+    = Plus Exp Exp
+    | Sub Exp Exp
+    | Times Exp Exp
+    | Divide Exp Exp
+    | Num Integer
   deriving (Eq, Ord, Show, Read)
 

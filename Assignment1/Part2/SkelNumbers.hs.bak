@@ -14,5 +14,6 @@ transExp x = case x of
   Plus exp1 exp2 -> failure x
   Sub exp1 exp2 -> failure x
   Times exp1 exp2 -> failure x
+  Divide exp1 exp2 -> failure x
   Num integer -> failure x
 

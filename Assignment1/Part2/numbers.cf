@@ -2,7 +2,8 @@ Plus. Exp ::= Exp "+" Exp1 ;
 Sub. Exp1 ::= Exp1 "-" Exp2;
 Times. Exp2 ::= Exp2 "*" Exp3;
 Divide. Exp3 ::= Exp3 "/" Exp4;
-Num. Exp4 ::= Integer ;
+Exponent. Exp4 ::= Exp4 "^" Exp5;
+Num. Exp5 ::= Integer ;
 
 
-coercions Exp 4; 
+coercions Exp 5; 
