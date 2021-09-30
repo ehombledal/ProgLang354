@@ -53,7 +53,8 @@ subtrI :: II -> II -> II
 subtrI (II a b) (II c d) = II (addN a d) (addN b c)
 
 -- Negation: -(a-b)=(b-a)
---negI :: II -> II
+negI :: II -> II
+negI (II a b) = (II b a) --covered in section 1 lecture! 
 
 ----------------
 -- QQ Arithmetic
@@ -70,10 +71,10 @@ multP I m = m
 multP (T p) x = addP (multP (p) x) x
 
 --convert numbers of type PP to numbers of type II 
---ii_pp:: PP -> II 
---ii_pp I = II (S O) 
---ii_pp (T n) = addI(SO) n --expected type II, actual type PP 
-
+{- ii_pp:: PP -> II 
+ii_pp I = II (S O) --covered in section 2 lecture 
+ii_pp (T n) = addI(SO) n --expected type II, actual type PP 
+ -}
 ----------------
 -- Normalisation
 ----------------
@@ -89,14 +90,16 @@ multP (T p) x = addP (multP (p) x) x
 ----------
 main = do
 
-    print $ addN (S (S O)) (S O)
-    print $ multN (S (S O)) (S (S (S O)))
+    --print $ addN (S (S O)) (S O)
+    --print $ multN (S (S O)) (S (S (S O)))
 
-    print $ addI (II (S (S O)) (S (S (S O)))) (II (S O) (S (S O)))
-    print $ multI (II (S (S O)) (S (S (S O)))) (II (S O) (S (S O)))
-    print $ subtrI (II (S (S O)) (S (S (S O)))) (II (S O) (S (S O)))
+    --print $ addI (II (S (S O)) (S (S (S O)))) (II (S O) (S (S O)))
+    --print $ multI (II (S (S O)) (S (S (S O)))) (II (S O) (S (S O)))
+    --print $ subtrI (II (S (S O)) (S (S (S O)))) (II (S O) (S (S O)))
 
-    print $ addP (T (T I)) (T I)
-    print $ multP (T I) (T I)
+    --print $ addP (T (T I)) (T I)
+    --print $ multP (T I) (T I)
+
+    print $ negI (II (S(S O)) (S O))
 
 
