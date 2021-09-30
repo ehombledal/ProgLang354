@@ -17,5 +17,7 @@ transExp x = case x of
   Divide exp1 exp2 -> failure x
   Exponent exp1 exp2 -> failure x
   Modulus exp1 exp2 -> failure x
+  Unary exp -> failure x
+  Binary exp -> failure x
   Num integer -> failure x
 

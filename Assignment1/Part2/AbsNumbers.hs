@@ -14,6 +14,8 @@ data Exp
     | Divide Exp Exp
     | Exponent Exp Exp
     | Modulus Exp Exp
+    | Unary Exp
+    | Binary Exp
     | Num Integer
   deriving (Eq, Ord, Show, Read)
 

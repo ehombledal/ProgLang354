@@ -4,6 +4,8 @@ Times. Exp2 ::= Exp2 "*" Exp3;
 Divide. Exp3 ::= Exp3 "/" Exp4;
 Exponent. Exp4 ::= Exp4 "^" Exp5;
 Modulus. Exp5 ::= Exp5 "%" Exp6;
+Unary. Exp6 ::= "-" Exp6; 
+Binary. Exp6 ::= "--" Exp6;
 Num. Exp6 ::= Integer ;
 
 

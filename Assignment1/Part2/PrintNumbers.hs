@@ -88,6 +88,8 @@ instance Print Exp where
     Divide exp1 exp2 -> prPrec i 3 (concatD [prt 3 exp1, doc (showString "/"), prt 4 exp2])
     Exponent exp1 exp2 -> prPrec i 4 (concatD [prt 4 exp1, doc (showString "^"), prt 5 exp2])
     Modulus exp1 exp2 -> prPrec i 5 (concatD [prt 5 exp1, doc (showString "%"), prt 6 exp2])
+    Unary exp -> prPrec i 6 (concatD [doc (showString "-"), prt 6 exp])
+    Binary exp -> prPrec i 6 (concatD [doc (showString "--"), prt 6 exp])
     Num n -> prPrec i 6 (concatD [prt 0 n])
 
 

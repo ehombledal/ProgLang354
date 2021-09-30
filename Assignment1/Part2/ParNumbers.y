@@ -25,8 +25,9 @@ import ErrM
   '*' { PT _ (TS _ 4) }
   '+' { PT _ (TS _ 5) }
   '-' { PT _ (TS _ 6) }
-  '/' { PT _ (TS _ 7) }
-  '^' { PT _ (TS _ 8) }
+  '--' { PT _ (TS _ 7) }
+  '/' { PT _ (TS _ 8) }
+  '^' { PT _ (TS _ 9) }
 
 L_integ  { PT _ (TI $$) }
 
@@ -48,7 +49,10 @@ Exp4 : Exp4 '^' Exp5 { AbsNumbers.Exponent $1 $3 } | Exp5 { $1 }
 Exp5 :: { Exp }
 Exp5 : Exp5 '%' Exp6 { AbsNumbers.Modulus $1 $3 } | Exp6 { $1 }
 Exp6 :: { Exp }
-Exp6 : Integer { AbsNumbers.Num $1 } | '(' Exp ')' { $2 }
+Exp6 : '-' Exp6 { AbsNumbers.Unary $2 }
+     | '--' Exp6 { AbsNumbers.Binary $2 }
+     | Integer { AbsNumbers.Num $1 }
+     | '(' Exp ')' { $2 }
 {
 
 returnM :: a -> Err a
