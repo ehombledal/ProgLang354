@@ -13,6 +13,7 @@ data Exp
     | Times Exp Exp
     | Divide Exp Exp
     | Exponent Exp Exp
+    | Modulus Exp Exp
     | Num Integer
   deriving (Eq, Ord, Show, Read)
 

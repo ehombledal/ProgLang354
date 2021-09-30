@@ -86,6 +86,7 @@ instance Print Exp where
     Sub exp1 exp2 -> prPrec i 1 (concatD [prt 1 exp1, doc (showString "-"), prt 2 exp2])
     Times exp1 exp2 -> prPrec i 2 (concatD [prt 2 exp1, doc (showString "*"), prt 3 exp2])
     Divide exp1 exp2 -> prPrec i 3 (concatD [prt 3 exp1, doc (showString "/"), prt 4 exp2])
-    Num n -> prPrec i 4 (concatD [prt 0 n])
+    Exponent exp1 exp2 -> prPrec i 4 (concatD [prt 4 exp1, doc (showString "^"), prt 5 exp2])
+    Num n -> prPrec i 5 (concatD [prt 0 n])
 
 

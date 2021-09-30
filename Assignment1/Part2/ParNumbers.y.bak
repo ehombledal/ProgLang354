@@ -13,6 +13,7 @@ import ErrM
 %name pExp2 Exp2
 %name pExp3 Exp3
 %name pExp4 Exp4
+%name pExp5 Exp5
 -- no lexer declaration
 %monad { Err } { thenM } { returnM }
 %tokentype {Token}
@@ -23,6 +24,7 @@ import ErrM
   '+' { PT _ (TS _ 4) }
   '-' { PT _ (TS _ 5) }
   '/' { PT _ (TS _ 6) }
+  '^' { PT _ (TS _ 7) }
 
 L_integ  { PT _ (TI $$) }
 
@@ -40,7 +42,9 @@ Exp2 : Exp2 '*' Exp3 { AbsNumbers.Times $1 $3 } | Exp3 { $1 }
 Exp3 :: { Exp }
 Exp3 : Exp3 '/' Exp4 { AbsNumbers.Divide $1 $3 } | Exp4 { $1 }
 Exp4 :: { Exp }
-Exp4 : Integer { AbsNumbers.Num $1 } | '(' Exp ')' { $2 }
+Exp4 : Exp4 '^' Exp5 { AbsNumbers.Exponent $1 $3 } | Exp5 { $1 }
+Exp5 :: { Exp }
+Exp5 : Integer { AbsNumbers.Num $1 } | '(' Exp ')' { $2 }
 {
 
 returnM :: a -> Err a
