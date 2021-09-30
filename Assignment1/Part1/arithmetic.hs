@@ -18,6 +18,7 @@ data PP = I | T PP
 
 -- Rational numbers
 data QQ =  QQ II PP
+  deriving (Eq,Show)
 
 ------------------------
 -- Arithmetic on the  VM
@@ -54,7 +55,7 @@ subtrI (II a b) (II c d) = II (addN a d) (addN b c)
 
 -- Negation: -(a-b)=(b-a)
 negI :: II -> II
-negI (II a b) = (II b a) --covered in section 1 lecture! 
+negI (II a b) = (II b a)
 
 ----------------
 -- QQ Arithmetic
@@ -71,14 +72,22 @@ multP I m = m
 multP (T p) x = addP (multP (p) x) x
 
 --convert numbers of type PP to numbers of type II 
-{- ii_pp:: PP -> II 
-ii_pp I = II (S O) --covered in section 2 lecture 
-ii_pp (T n) = addI(SO) n --expected type II, actual type PP 
- -}
+ii_pp:: PP -> II 
+ii_pp I = II (S O) O 
+ii_pp (T n) = addI (ii_pp n) (ii_pp I) --done in office hours 
+--ask aviv in class 
+
+ --Addition (a/b) + (c/d) = (ad+bc)/(bd)
+ --addQ :: QQ -> QQ -> QQ
+ --addQ (QQ a b) (QQ c d) = QQ()
+
+ --Multiplication (a/b)*(c/d) = (ac)/(bd)
+multQ :: QQ -> QQ -> QQ  
+multQ (QQ a b) (QQ c d) = QQ (multI a c) (multP c d)
+
 ----------------
 -- Normalisation
 ----------------
-
 
 ----------------------------------------------------
 -- Converting between VM-numbers and Haskell-numbers
@@ -101,5 +110,6 @@ main = do
     --print $ multP (T I) (T I)
 
     print $ negI (II (S(S O)) (S O))
+    print $ multQ (QQ (S(S O)) (S O))
 
 
