@@ -78,7 +78,8 @@ ii_pp (T n) = addI (ii_pp n) (ii_pp I) --done in office hours
 
  --Addition (a/b) + (c/d) = (ad+bc)/(bd)
 addQ :: QQ -> QQ -> QQ
-addQ (QQ a b) (QQ c d) = QQ (multI (a) (ii_pp d)) (multP (b) (d))
+addQ (QQ a b) (QQ c d) = QQ (addI (multI (a) (ii_pp(d))) (multI (c) (ii_pp(b)))) (multP (b) (d))
+
 
  --Multiplication (a/b)*(c/d) = (ac)/(bd)
 multQ :: QQ -> QQ -> QQ  
@@ -124,24 +125,11 @@ float_qq (QQ a b) = fromIntegral (int_ii (a)) / fromIntegral (int_pp(b))
 -- Testing
 ----------
 main = do
+    let i = 4
+    let j = 2
+    let k = 1
+    let l = 3
 
-    --print $ addN (S (S O)) (S O)
-    --print $ multN (S (S O)) (S (S (S O)))
-
-    --print $ addI (II (S (S O)) (S (S (S O)))) (II (S O) (S (S O)))
-    --print $ multI (II (S (S O)) (S (S (S O)))) (II (S O) (S (S O)))
-    --print $ subtrI (II (S (S O)) (S (S (S O)))) (II (S O) (S (S O)))
-
-    --print $ addP (T (T I)) (T I)
-    --print $ multP (T I) (T I)
-
-    --print $ negI (II (S(S O)) (S O))
-   -- print $ addQ (QQ (S (S O)) T(T I)) (QQ (S(S(S O))) T(T I))
-    print $ nn_int 3
-    print $ int_nn (S (S O))
-    print $ ii_int 3
-    print $ int_ii (II (S (S O)) (S (S (S O))))
-    print $ pp_int 3
-    print $ int_pp (T (T I))
-    print $ float_qq (QQ (II (S (S O)) (S (S (S O)))) (T (T I)))
+    print $ float_qq (addQ (QQ (ii_int i) (pp_int j)) (QQ (ii_int k) (pp_int l)))
+    print $ float_qq (multQ (QQ (ii_int i) (pp_int j)) (QQ (ii_int k) (pp_int l)))
 
