@@ -88,8 +88,13 @@ multQ (QQ a b) (QQ c d) = QQ (multI a c) (multP b d)
 ----------------
 -- Normalisation
 ----------------
+normalizeI :: II -> II -- done in office hours with SI 
+normalizeI (II n O) = II n O 
+normalizeI (II O n) = II O n
+normalizeI (II (S n) (S m)) = normalizeI (II n m)
 ----------------------------------------------------
 -- Converting between VM-numbers and Haskell-numbers
+-- all of these were done in office hours 
 ----------------------------------------------------
 -- Precondition: Inputs are non-negative
 nn_int :: Integer -> NN
@@ -120,16 +125,27 @@ int_pp (T n) = 1 + int_pp n
 float_qq :: QQ -> Float
 float_qq (QQ a b) = fromIntegral (int_ii (a)) / fromIntegral (int_pp(b))
 
+------------------------------
+-- Normalisation by Evaluation
+------------------------------
 
+nbv :: II -> II
+nbv (II n m) = ii_int(int_ii(II n m))
 ----------
 -- Testing
 ----------
 main = do
+    -- Integers: (II i j) represents i-j, (II k l) represents k-l
     let i = 4
     let j = 2
     let k = 1
     let l = 3
-
+    print $ int_ii (addI (II (nn_int i) (nn_int j)) (II (nn_int k) (nn_int l)))
+    print $ int_ii (multI (II (nn_int i) (nn_int j)) (II (nn_int k) (nn_int l)))
+    -- Fractions: (QQ i j) represents i/j, (QQ k l) represents k/l
     print $ float_qq (addQ (QQ (ii_int i) (pp_int j)) (QQ (ii_int k) (pp_int l)))
     print $ float_qq (multQ (QQ (ii_int i) (pp_int j)) (QQ (ii_int k) (pp_int l)))
-
+    -- Normalisation (recursive definition)
+    print $ normalizeI (II (nn_int i) (nn_int j))
+    -- Normalisation (by evaluation)
+    print $ nbv (II (nn_int i) (nn_int j))
