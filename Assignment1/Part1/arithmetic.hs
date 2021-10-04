@@ -75,23 +75,49 @@ multP (T p) x = addP (multP (p) x) x
 ii_pp:: PP -> II 
 ii_pp I = II (S O) O 
 ii_pp (T n) = addI (ii_pp n) (ii_pp I) --done in office hours 
---ask aviv in class 
 
  --Addition (a/b) + (c/d) = (ad+bc)/(bd)
- --addQ :: QQ -> QQ -> QQ
- --addQ (QQ a b) (QQ c d) = QQ()
+addQ :: QQ -> QQ -> QQ
+addQ (QQ a b) (QQ c d) = QQ (multI (a) (ii_pp d)) (multP (b) (d))
 
  --Multiplication (a/b)*(c/d) = (ac)/(bd)
 multQ :: QQ -> QQ -> QQ  
-multQ (QQ a b) (QQ c d) = QQ (multI a c) (multP c d)
+multQ (QQ a b) (QQ c d) = QQ (multI a c) (multP b d)
 
 ----------------
 -- Normalisation
 ----------------
-
 ----------------------------------------------------
 -- Converting between VM-numbers and Haskell-numbers
 ----------------------------------------------------
+-- Precondition: Inputs are non-negative
+nn_int :: Integer -> NN
+nn_int 0 = O
+nn_int n = S(nn_int(n - 1))
+
+int_nn :: NN->Integer
+int_nn O = 0
+int_nn (S n) = 1 + int_nn n
+
+ii_int :: Integer -> II
+ii_int 0 = II O O
+ii_int n = II (nn_int n) O
+
+int_ii :: II -> Integer
+int_ii (II O O) = 0
+int_ii (II n m) = int_nn n - int_nn m
+
+-- Precondition: Inputs are positive
+pp_int :: Integer -> PP
+pp_int 1 = I
+pp_int n = T(pp_int (n - 1))
+
+int_pp :: PP->Integer
+int_pp I = 1
+int_pp (T n) = 1 + int_pp n
+
+float_qq :: QQ -> Float
+float_qq (QQ a b) = fromIntegral (int_ii (a)) / fromIntegral (int_pp(b))
 
 
 ----------
@@ -109,7 +135,13 @@ main = do
     --print $ addP (T (T I)) (T I)
     --print $ multP (T I) (T I)
 
-    print $ negI (II (S(S O)) (S O))
-    print $ multQ (QQ (S(S O)) (S O))
-
+    --print $ negI (II (S(S O)) (S O))
+   -- print $ addQ (QQ (S (S O)) T(T I)) (QQ (S(S(S O))) T(T I))
+    print $ nn_int 3
+    print $ int_nn (S (S O))
+    print $ ii_int 3
+    print $ int_ii (II (S (S O)) (S (S (S O))))
+    print $ pp_int 3
+    print $ int_pp (T (T I))
+    print $ float_qq (QQ (II (S (S O)) (S (S (S O)))) (T (T I)))
 
