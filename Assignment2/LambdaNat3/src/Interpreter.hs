@@ -75,3 +75,6 @@ subst id s (EAbs id1 e1) =
 subst id s (ENat0) = ENat0
 subst id s (ENatS e) = (subst id s e)
 
+--part 3 Bonus Credit Ones
+evalCBN(EFix e) = evalCBN(Eapp e (EFix e))
+evalCBN (ERec i e1 e2) = mevalCBN (Eapp (EAbs i e2) (EFix e1))
