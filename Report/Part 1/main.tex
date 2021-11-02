@@ -1,0 +1,168 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage[usenames]{color}
+\usepackage{hyperref}
+  \hypersetup{
+    colorlinks = true,
+    urlcolor = blue,       % color of external links using \href
+    linkcolor= blue,       % color of internal links 
+    citecolor= blue,       % color of links to bibliography
+    filecolor= blue,        % color of file links
+    }
+    
+\usepackage{listings}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=haskell,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\title{CPSC-354 Report - Part 1}
+\author{Erik Hombledal \\ Chapman University}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+In this report, I will be investigating the computational time differences between Haskell and Python, and why these differences exist, despite both languages being written in C. To test this, I will be using large, identical list operations in both Python and Haskell, and then comparing the execution time between the two.
+\end{abstract}
+
+\section{What Makes Python and Haskell Different?}
+To start, I will begin with an introduction on the differences between Python and Haskell, and how these differences can impact performance during execution. 
+
+    \subsection{Functional vs Imperative Coding}
+    It would not be fair to start a report on Haskell and Python without discussing the obvious difference between the two - Python being an imperative language, and Haskell being a functional one. Most programmers start out their careers with iterative languages, starting in either Python, or C++/C. Because of this, learning a language such as Haskell is the equivalent of turning the world on its head, as precious little you learned in iterative languages will apply conceptually. 
+
+    \medskip\noindent As a refresher, iterative languages work by giving a computer a sequence of tasks, and the computer then performing them in order (or, you know, \textit{iteratively}.) You declare a variable, you ask the computer to do some calculations to that variable, and then you have it return the result, which is now changed from the original variable you gave it. Easy, clean, and simple to wrap your head around. 
+    
+    \medskip\noindent\textbf{Functional Programming Does Not Work This Way.} 
+    
+    \medskip\noindent Functional programming is based on is the idea that you declare concepts, and then you logically build on top of what you have previously stated to develop more complex computations(\href {http://learnyouahaskell.com/introduction}{Source 1}). To enable this, functional programming is absolute. If you tell Haskell that int myNumber = 5, you can not later state that myNumber = 7. Functional programming forbids this to ensure that functions will \textit{always} do exactly what you tell them to. This might seem unnecessarily rigid, but is incredibly powerful later on down the road. For example...
+        \begin{lstlisting}
+        a = 5
+        b = 7
+        SumValues a b = a + b; 
+        --This will always return 12. You can't say later on that a = 8, making a+b not equal 12. 
+        --Following this logic, you can not redefine Sumvalues to be something else. Sumvalues will always be a + b. 
+        \end{lstlisting}
+        
+    \medskip\noindent So, what do we now do with this simple function? Well, we use it to build more complex functions, using it as a building block. Because we ensured that functions can not be modified, we guarantee that our foundation is solid and unchanging. Continuing our previous example...
+        \begin{lstlisting}
+         -- lets say we wanted to get the square of a sum. We can use our previously declared function to help us! 
+          SumValues a b = a + b;
+          SquareSum a b = (SumValues a b) * (SumValues a b)
+          --Squaresum 2 3 would return a value of 25!
+        \end{lstlisting}
+    \medskip\noindent This is very powerful, and allows you to build incredibly complex programs with very little repetition in your code. Being able to build functions on top of each other saves you from having to retread the same ground you would in an iterative program, as you have already done the work. Simply call your previous functions!
+    
+    \medskip
+     \medskip\noindent Now that we have finished with the obvious difference, we can go now and discuss some of the unique traits of Haskell, and see how they compare to Python. 
+     
+    \subsection{Lazy vs. Strict Evaluation}
+    When reading into the advantages of Haskell over other languages, you quickly realize that one of the major selling points is the ability for Haskell to be "lazy." What this means is that a lazy language will \textit{not} run calculations unless they are needed somewhere else(\href {https://towardsdatascience.com/what-is-lazy-evaluation-in-python-9efb1d3bfed0}{Source 2}). For example, if we have a list of integers: 
+
+    \begin{lstlisting}
+    xs = [1, 3, 5, 7, 9]
+    --and then ran the function double() which doubles the integers in our list...
+    doublexs = double(xs);
+    --nothing would happen computationally until you call the result!
+    print(doublexs[2]);
+    --this line would only call double() on the second index of xs, and that is it! 
+    \end{lstlisting}
+
+    \medskip\noindent As you can imagine, this can save a large amount of computation time in larger programs, or when dealing with larger lists. However, in this particular case, Haskell is not unique. Python3 actually has the exact same functionality, performed in almost the exact same way. So, there is no real computational difference between Python and Haskell, at least in this specific category. However, as this is one of the main concepts that allows Haskell its speed compared to most other languages such as C, it wouldn't feel correct to not discuss it at least partially. 
+
+    \subsection{The Many Types of Typings}
+	
+    When it comes to comparing the typing between Haskell and Python, it is important to establish what exactly we mean by "typing." There are three major categories that you can compare a language's typing on - 
+    \subsubsection{Strong vs. Weak Typing}
+    Firstly, you have whether the language is strongly typed or weakly typed. In a weakly typed language, variables can be implicitly converted into unrelated types, whereas in a strongly typed language, you would require an explicit conversion to be performed. (\href{https://pythonconquerstheuniverse.wordpress.com/2009/10/03/static-vs-dynamic-typing-of-programming-languages/} {Source 3}). Giving a quick example:
+    
+    \medskip .
+    
+    \medskip .
+    
+    \begin{lstlisting}
+    --In a weakly typed language, this code snippet would work fine. In a strongly typed language, however, you would need to cast either the int or the string to the other type. 
+    a = 5
+    b = "5"
+    c = concat(a, b)
+    d = add(a, b)
+    \end{lstlisting}
+    
+    \medskip\noindent Both Haskell and Python are strongly typed, meaning that one type can not be implicitly converted into another. Because of this, both languages require casting to be performed if you are attempting to combine two types. The only exception to this is combining integers and floats, which are handled as a special case in each language for simplicity and convenience, despite being different types. 
+    
+    \medskip\noindent Generally, languages that are strongly typed are faster and safer, as the compiler does not have to spend time guessing what type you mean when you are attempting to combine two different categories of things. A strongly typed language prevents this situation from even occurring in the first place, and throws an error if you attempt to compile with this type uncertainty present. 
+    
+    \subsubsection{Static vs Dynamic Typing}
+    \medskip\noindent Next, we have the comparison between being statically typed and dynamically typed. Statically typed languages bind variables to both an object and a type, whereas dynamically typed languages only bind them to a specific object (\href{https://pythonconquerstheuniverse.wordpress.com/2009/10/03/static-vs-dynamic-typing-of-programming-languages/} {Source 3}). In practice, a weak language allows you to have a variable be equal to a string in one instance, then equal to an integer in another. As well, it means you can throw items of different types into the same list without issue. In a static typed language, however, once you establish a variable, it is associated to the specific type you started with, and can not be changed. 
+    
+       \begin{lstlisting}
+    --In a dynamic typed language, this code would work, and you would add the string to the array. In a static language, it would throw an error. 
+    list[] = [1, 3, 5, 7, 9]
+    list[1] = "Hello!"
+    print(array[])
+    --1, Hello!, 5, 7, 9
+    \end{lstlisting}
+    
+    \medskip\noindent As can most likely be expected, Haskell is a statically typed language. Being able to change the typing of a variable during runtime goes against the core tenets of functional programming, and would defeat the purpose of not allowing any changes to your foundation. However, Python is dynamically typed, and does allow these kinds of operations. 
+    
+    \medskip\noindent Because of this difference between Haskell and Python, there is some extra work the interpreter in Python has to do to to update the types of each variable and object as they potentially change, leading to additional computation time required. 
+    
+    \subsubsection{Explicit vs Implicit Typing}
+    Lastly, there is the difference between explicit and implicit typing. In explicit typing, you must declare every variable as having its own type, whereas in an implicit language, the interpreter/compiler assumes what the type is based on the operations you perform on it. As an example: 
+    
+    \begin{lstlisting}
+    --in an implicit language, this would work fine and c would be implicitly declared an integer. In an explicit language, it would be an undeclared type error on  c. 
+    a = 5;
+    b = 9;
+    c = a + b;
+    \end{lstlisting}
+    
+    \medskip\noindent In a very interesting turn of events, both Python \textit{and} Haskell are implicitly typed. However, in Haskell's case, this is not a bad thing. As long as the variable's type is consistent after it is implicitly declared, Haskell would have no issue understanding what to do with that variable moving forward. So even though it might be a cause for concern on paper, in practice it is actually just as safe as declaring the type yourself.  
+
+    \subsection{Interpreted vs. Compiled Language}
+    --this is where most of the speed actually comes from 
+    
+
+\section{Computational Comparison}
+--fill a list with 10,000 randomly generated integers between 1 and 9, add 1 to each of them, then sum the list. 
+
+\section{How Do We Apply This?}
+--discuss results, where and why would you use each language 
+
+\section{Sources}
+
+\begin{enumerate}
+\item \href {http://learnyouahaskell.com/introduction}{Learnyouahaskell.com/introduction}
+\item \href {https://towardsdatascience.com/what-is-lazy-evaluation-in-python-9efb1d3bfed0} {https://towardsdatascience.com/what-is-lazy-evaluation-in-python-9efb1d3bfed0}
+\item \href {https://pythonconquerstheuniverse.wordpress.com/2009/10/03/static-vs-dynamic-typing-of-programming-languages/} {https://pythonconquerstheuniverse.wordpress.com/2009/10/03/static-vs-dynamic-typing-of-programming-languages/}
+\item\href {https://www.freelancinggig.com/blog/2019/01/07/haskell-vs-python-what-you-need-to-know/}{https://www.freelancinggig.com/blog/2019/01/07/haskell-vs-python-what-you-need-to-know/}
+\end{enumerate}
+
+\end{document}
+
+
