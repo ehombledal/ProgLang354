@@ -23,16 +23,17 @@ evalCBN (EFix e) = evalCBN (EApp e (EFix e))
 -- evalCBN ENil 
 evalCBN ENil = ENil
 -- evalCBN (ECons e1 e2) 
-evalCBN (ECons e1 e2) = Econs (evalCBN e1) (evalCBN e2)
+evalCBN (ECons e1 e2) = ECons (evalCBN e1) (evalCBN e2)
 -- evalCBN (EHd e) 
-evalCBN (EHd e) = case (evalCBN e1) of (ECons e1 _) -> evalCBN e1
+evalCBN (EHd e) = case (evalCBN e) of (ECons e1 _) -> evalCBN e1
 -- evalCBN (ETl e) 
-evalCBN (ETl e) = case (evalCBN e1) of (ECons _ e1) -> evalCBN e1
+evalCBN (ETl e) = case (evalCBN e) of (ECons _ e1) -> evalCBN e1
 -- evalCBN (ELE e1 e2)
-evalCBN (ELE e1 e2) = case (evalCBN e1) of (EInt n) -> case (evalCBN e2) of 
-                      (EInt m) -> case (n <= m) of e -> EInt 1
-                      (EInt m) -> case (n > m) of e  -> EInt 0
-                      --works for 2 / 3 cases, does not work when e2 is greater than e1
+evalCBN (ELE e1 e2) = case (evalCBN e1) of 
+    (EInt n) -> case (evalCBN e2) of 
+        (EInt m) -> case (n <= m) of 
+            True -> EInt 1
+            False -> EInt 0
 -- END ADDED CODE -- 
 
 
