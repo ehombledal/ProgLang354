@@ -29,18 +29,21 @@ plustwo x = x + 2;
 --MAP--
 toMap :: Int -> [Int] -> [Int]
 toMap x [] = []
-toMap x (y) = toMap x (y + x:ys)
+toMap x (y : ys) = y + x : toMap x (ys)
 
 
 --INSERT--
 insertList :: Int -> [Int] -> [Int]
-insertList x [] = []
-insertList x y = x : y --adds to front of list
+insertList x [] = [x]
+insertList x (y:ys) = if x < y
+    then x : y : ys
+    else y : insertList x ys 
+
 
 --SORT--
 sortList :: [Int] -> [Int]
-sortList [] = []
---sortList y = 
+sortList [y] = [y]
+sortList (y : ys) = insertList y (sortList ys)
 
 main = do
     let list1 = [2,3,1]
@@ -53,8 +56,9 @@ main = do
     print $ prod (list3)
     print $ sumList (list3)
 
-    print $ plustwo (3);
-    print $ toMap plustwo list3
+    --print $ plustwo (3);
+    print $ toMap (plustwo 0) list3 --this effectively adds 2
 
-    --print $ insertList 3 list3
+    --print $ insertList 6 list3
+    print $ sortList list2
 
