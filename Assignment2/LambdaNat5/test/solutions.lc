@@ -1,0 +1,35 @@
+let rec member = \elem. \list. 
+if (hd list)=# 
+    then 0
+    else if 
+            then
+            else 0
+
+in
+member 1 2:3:1:#
+
+;;
+
+
+
+let rec sum = \list.
+if list=#
+    then 0 
+else 
+    (hd list) + sum (tl list)
+
+in
+sum 1:2:3:4:#
+
+;;
+
+let rec prod = \list.
+if list = #
+    then 0
+else
+    (hd list) * prod (tl list)
+
+in 
+prod 1:2:3:4:#
+
+;;
