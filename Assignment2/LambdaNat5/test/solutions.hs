@@ -53,8 +53,9 @@ main = do
     print $ toRemove 2 (list2);
 
     let list3 = [1,2,3,4]
-    print $ prod (list3)
     print $ sumList (list3)
+    print $ prod (list3)
+
 
     --print $ plustwo (3);
     print $ toMap (plustwo 0) list3 --this effectively adds 2
