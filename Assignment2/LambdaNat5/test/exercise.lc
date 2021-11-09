@@ -4,7 +4,7 @@ let rec member = \elem. \list.
             member (elem) (tl list)
 
 in
-member 2 2:3:1:#
+member 1 2:3:#
 
 ;;
 
@@ -18,7 +18,7 @@ let rec remove = \elem. \list.
             (hd list) : (remove (elem) (tl list))
 
 in
-remove 2 1:2:3:1:2:3:#
+remove 1 2:1:3:#
 
 ;;
 
@@ -56,7 +56,7 @@ let rec map = \f. \list.
         (f (hd list)):(map f (tl list))
         
 in
-map plus_two 1:2:3:4:#
+map plus_two 1:2:3:#
 
 ;;
 

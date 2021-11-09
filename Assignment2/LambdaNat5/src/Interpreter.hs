@@ -91,3 +91,14 @@ subst id s (EMinus e l) = EMinus (subst id s e) (subst id s l)
 subst id s (ETimes e l) = ETimes (subst id s e) (subst id s l)
 -- add the missing cases
 
+-- ENil
+subst id s (ENil) = ENil
+-- evalCBN (ECons e1 e2)
+subst id s (ECons e1 e2) = ECons (subst id s e1) (subst id s e2)
+-- evalCBN (EHd e)
+subst id s (EHd e) = EHd (subst id s e)
+-- evalCBN (ETl e)
+subst id s (ETl e) = ETl (subst id s e)
+--evalCBN (ELE e1 e2)
+subst id s (ELE e1 e2) = ELE (subst id s e1) (subst id s e2)
+
