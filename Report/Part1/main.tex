@@ -6,6 +6,8 @@
 \usepackage{amssymb}
 \usepackage{fullpage}
 \usepackage[usenames]{color}
+\usepackage{setspace}
+    \setstretch{1.25}
 \usepackage{hyperref}
   \hypersetup{
     colorlinks = true,
@@ -101,10 +103,6 @@ To start, I will begin with an introduction on the differences between Python an
     \subsubsection{Strong vs. Weak Typing}
     Firstly, you have whether the language is strongly typed or weakly typed. In a weakly typed language, variables can be implicitly converted into unrelated types, whereas in a strongly typed language, you would require an explicit conversion to be performed. (\href{https://pythonconquerstheuniverse.wordpress.com/2009/10/03/static-vs-dynamic-typing-of-programming-languages/} {Source 3}). Giving a quick example:
     
-    \medskip .
-    
-    \medskip .
-    
     \begin{lstlisting}
     --In a weakly typed language, this code snippet would work fine. In a strongly typed language, however, you would need to cast either the int or the string to the other type. 
     a = 5
@@ -118,7 +116,7 @@ To start, I will begin with an introduction on the differences between Python an
     \medskip\noindent Generally, languages that are strongly typed are faster and safer, as the compiler does not have to spend time guessing what type you mean when you are attempting to combine two different categories of things. A strongly typed language prevents this situation from even occurring in the first place, and throws an error if you attempt to compile with this type uncertainty present. 
     
     \subsubsection{Static vs Dynamic Typing}
-    \medskip\noindent Next, we have the comparison between being statically typed and dynamically typed. Statically typed languages bind variables to both an object and a type, whereas dynamically typed languages only bind them to a specific object (\href{https://pythonconquerstheuniverse.wordpress.com/2009/10/03/static-vs-dynamic-typing-of-programming-languages/} {Source 3}). In practice, a weak language allows you to have a variable be equal to a string in one instance, then equal to an integer in another. As well, it means you can throw items of different types into the same list without issue. In a static typed language, however, once you establish a variable, it is associated to the specific type you started with, and can not be changed. 
+    \medskip\noindent Next, we have the comparison between being statically typed and dynamically typed. Statically typed languages bind variables to both an object and a type, whereas dynamically typed languages only bind them to a specific object (\href{https://pythonconquerstheuniverse.wordpress.com/2009/10/03/static-vs-dynamic-typing-of-programming-languages/} {Source 3}). In practice, a weak language allows you to have a variable be equal to a string in one instance, then equal to an integer in another. As well, it means you can throw items of different types into the same list without issue. In a static typed language, however, once you establish a variable, it is associated to the specific type you started with and can not be changed. 
     
        \begin{lstlisting}
     --In a dynamic typed language, this code would work, and you would add the string to the array. In a static language, it would throw an error. 
@@ -128,7 +126,7 @@ To start, I will begin with an introduction on the differences between Python an
     --1, Hello!, 5, 7, 9
     \end{lstlisting}
     
-    \medskip\noindent As can most likely be expected, Haskell is a statically typed language. Being able to change the typing of a variable during runtime goes against the core tenets of functional programming, and would defeat the purpose of not allowing any changes to your foundation. However, Python is dynamically typed, and does allow these kinds of operations. 
+    \medskip\noindent As can be expected, Haskell is a statically typed language. Being able to change the typing of a variable during runtime goes against the core tenets of functional programming, and would defeat the purpose of not allowing any changes to your foundation. However, Python is dynamically typed, and does allow these kinds of operations. 
     
     \medskip\noindent Because of this difference between Haskell and Python, there is some extra work the interpreter in Python has to do to to update the types of each variable and object as they potentially change, leading to additional computation time required. 
     
@@ -145,14 +143,58 @@ To start, I will begin with an introduction on the differences between Python an
     \medskip\noindent In a very interesting turn of events, both Python \textit{and} Haskell are implicitly typed. However, in Haskell's case, this is not a bad thing. As long as the variable's type is consistent after it is implicitly declared, Haskell would have no issue understanding what to do with that variable moving forward. So even though it might be a cause for concern on paper, in practice it is actually just as safe as declaring the type yourself.  
 
     \subsection{Interpreted vs. Compiled Language}
-    --this is where most of the speed actually comes from 
+    Last, but certainly not least, is discussing the difference between how Haskell and Python are interpreted and compiled. To start, it is important to clarify the difference between an interpreted language versus a compiled one, and what that actually means conceptually. When you attempt to run code on your computer, your machine needs to transform these written, human instructions into something the machine can understand and perform calculations on. In computing, there are two major ways to handle this - either through a compiled language or an interpreted language solution. 
+    
+    \medskip\noindent In a compiled language, the computer directly converts your code into instructions your machine can understand. However, these instructions are made explicitly for your computer, down to available memory, CPU speeds, RAM speed, and so on. Because of this, the code has to be recompiled on each new machine it needs to run on, as the specs of each machine will be different. As well, this method means that any change made to the code requires you to rebuild your executable. However, the payoff for this is faster computation speeds, as well as the ability to have some control over hardware operations such as memory allocation. 
+    
+    \medskip\noindent On the other hand, interpreted languages convert your human code into machine code through the use of an interpreter. This interpreter converts your code line by line as it runs your program. However, this additional overhead step of creating the machine instructions just before you need them does lead to a lot of increased computational overhead and inefficiency, and can slow down your program significantly (\href{https://www.freecodecamp.org/news/compiled-versus-interpreted-languages/}{Source 9}). The advantage, however, is that the interpreter will work regardless of what specs your current machine has, so code can be easily transferred and run on different machines without the need to compile. Historically, this was the major selling point of interpreted languages like Java. As well, no need to compile can save a lot of time while testing and debugging a program, as you do not need to waste computation time on recompiling the set of instructions each time you make a change.  
+    
+    \medskip\noindent Returning to our languages, we can see where the primary difference in speed comes from between Haskell and Python. Haskell, being a compiled language, is far faster at executing instructions than Python, an interpreted language. However, Python is able to run on machines without the need to compile, and is generally easier to develop on because of this. 
     
 
-\section{Computational Comparison}
---fill a list with 10,000 randomly generated integers between 1 and 9, add 1 to each of them, then sum the list. 
+\section{Performing the Computational Comparison}
+ To compare the computation speed between Haskell and Python, I created a program that creates 500,000 random integers in a list between 0 and 9, adds 1 to each of them, then sums the resulting list. I did the +1 and summation of both lists to get around the "laziness" of Haskell and Python, and to ensure both lists were properly generated. 
+ 
+ \medskip\noindent In Python, I was able to create my program in Replit without issue, but I was unable to in Haskell because Replit does not contain some necessary libraries for Random. So, the Python program will be in Replit, and the Haskell program will be on Github. 
+ 
+ \medskip\noindent Here are both of the programs for you to run, as well as a snippet of the Python program to see it conceptually.
+ 
+ \medskip\href{https://replit.com/@ErikHombledal/PaperExamplePython#main.py} {Python Code - Replit} (\href{https://www.tutorialspoint.com/generating-random-number-list-in-python}{Source 4}) (\href{https://stackoverflow.com/questions/1557571/how-do-i-get-time-of-a-python-programs-execution} {Source 5})
+ 
+ \medskip\href{https://github.com/ehombledal/ProgLang354/blob/main/Report/Part1/HaskellPaperExample.hs} {Haskell Code - Github}
+ (\href{https://stackoverflow.com/questions/30994484/haskell-generate-and-use-the-same-random-list}{Source 6})
+ (\href{https://stackoverflow.com/questions/5968614/how-to-get-a-programs-running-time-in-haskell}{Source 7})
+ 
+     \begin{lstlisting}
+    randomlist = []
+    for i in range (0, 500000): --for loop
+      n = random.randint(0,9) -- generates randoms
+      randomlist.append(n) --appends to list
+    
+    for i in range (0, 500000):
+      randomlist[i] = randomlist[i] + 1; --adds 1 to each
+    
+    print(sum(randomlist)) -- sums list
 
-\section{How Do We Apply This?}
---discuss results, where and why would you use each language 
+    \end{lstlisting}
+ 
+
+\section{Results and Applications}
+    \subsection{Results Analysis}
+    \medskip\noindent Upon running both of the programs, you can see the stark difference in execution time between Python and Haskell, even while controlling for laziness. After running the programs 5 times each, the Python program averaged around 2.6 seconds, whereas the Haskell program averaged 0.75 seconds. Despite performing identical list operations, the Haskell calculation was almost 3x faster. While some of this could be chalked up to using Replit to handle the Python calculations and the additional overhead, the time difference would not be anywhere near the magnitude we see in the results. 
+    
+    \subsection{How Do We Apply This in the Real World?}
+        \subsubsection{Calculation Speed}
+        When comparing Haskell and Python, the calculation speed difference is quite staggering, even with such a computationally simple exercise. If you were to run a database in Python, handling potentially millions of lookups at once, it is hard to see how an interpreted language would even be functional in this circumstance. With a language like Haskell, however, it becomes much easier to handle large amounts of calculations quickly. As well, Haskell would have applications in real-time systems, where the added security and safety from functional programming languages, as well as the faster calculation speeds, would be incredibly beneficial. 
+        \subsubsection{Learning Complexity}
+        In general, Haskell and functional programming as a whole are a lot more difficult for the average programmer to understand, with the vast majority of programmers working in iterative languages. Because of this, many people shy away from the advantages that functional programming could provide due to the steep learning curve. Personally, I understand the fear. If you do not have a solid background in mathematics, functional programming will appear far too mathematical for most people to even want to attempt. 
+        \subsubsection{Overall Support}
+        Python is far, far more supported in the real world than Haskell. With the myriad libraries available to Python, it is quickly becoming the most used programming language in the world. Haskell, on the other hand, is a far more specialized tool. Haskell, and functional programming in general, just simply do support in order for them to become more widespread and supported in industry, and will most likely remain niche compared to C,C++, and Python. 
+        
+\section {Conclusion}
+Overall, this deep dive into Haskell and Python was informative, both about the two featured languages, and about programming languages as a whole. Realizing how many different ways there are to categorize languages, what they mean, and how they can influence how we code was very interesting to me. As well, it has also given me a deper appreciation for functional programming, and the computational and organizational benefits it can provide. For my next section of the paper, I hope to cover the halting problem, and potentially tie it to Python and Haskell as I discussed here. 
+
+\medskip\noindent 
 
 \section{Sources}
 
@@ -161,7 +203,13 @@ To start, I will begin with an introduction on the differences between Python an
 \item \href {https://towardsdatascience.com/what-is-lazy-evaluation-in-python-9efb1d3bfed0} {https://towardsdatascience.com/what-is-lazy-evaluation-in-python-9efb1d3bfed0}
 \item \href {https://pythonconquerstheuniverse.wordpress.com/2009/10/03/static-vs-dynamic-typing-of-programming-languages/} {https://pythonconquerstheuniverse.wordpress.com/2009/10/03/static-vs-dynamic-typing-of-programming-languages/}
 \item\href {https://www.freelancinggig.com/blog/2019/01/07/haskell-vs-python-what-you-need-to-know/}{https://www.freelancinggig.com/blog/2019/01/07/haskell-vs-python-what-you-need-to-know/}
+\item\href {https://www.tutorialspoint.com/generating-random-number-list-in-python}{https://www.tutorialspoint.com/generating-random-number-list-in-python}
+\item\href{https://stackoverflow.com/questions/1557571/how-do-i-get-time-of-a-python-programs-execution}{https://stackoverflow.com/questions/1557571/how-do-i-get-time-of-a-python-programs-execution}
+\item\href{https://stackoverflow.com/questions/5968614/how-to-get-a-programs-running-time-in-haskell}{https://stackoverflow.com/questions/5968614/how-to-get-a-programs-running-time-in-haskell}
+\item\href{https://stackoverflow.com/questions/30994484/haskell-generate-and-use-the-same-random-list}{https://stackoverflow.com/questions/30994484/haskell-generate-and-use-the-same-random-list}
+\item\href{https://www.freecodecamp.org/news/compiled-versus-interpreted-languages/}{https://www.freecodecamp.org/news/compiled-versus-interpreted-languages/}
 \end{enumerate}
+
 
 \end{document}
 
