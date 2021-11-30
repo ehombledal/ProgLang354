@@ -1,0 +1,59 @@
+
+-- MEMBER --
+rec member = \x.\y. case y of { 
+    [] -> false, 
+    (a:as) -> case x == a of { true -> true, _ -> member x as } };;
+
+-- REMOVE --
+rec remove = \x. \y.
+case (member x y) of {
+    false -> y,
+    true -> case y of {
+        (a:as) -> case x == a of {
+            true -> as, 
+            false -> a:remove(x as)
+        }
+    }
+};;
+
+-- SUM --
+rec sum = \x. 
+    case x of {
+        [] -> 0,
+        (a:as) -> a + sum as 
+    };;
+
+-- PROD --
+rec prod = \x. 
+    case x of {
+        [] -> 1,
+        (a:as) -> a * prod as 
+    };;
+
+-- PLUSTWO --
+val plustwo = \x. x+2;;
+
+-- MAP --
+rec map = \x.\y.
+case y of {
+    [] -> y,
+    (a:as) -> (x a):(map x as)
+};;
+
+-- INSERT --
+rec insert = \x. \y.
+    case y of {
+        [] -> x:y,
+        (a:as) -> 
+            case x < a of {
+                true -> x:y,
+                false -> a:(insert x as)
+            }
+    };;
+
+-- SORT --
+rec sort = \x. 
+    case x of {
+        [] -> x,
+        (a:as) -> insert a (sort as)
+    };;

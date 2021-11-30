@@ -1,0 +1,15 @@
+:q
+insert 4 [1,2,3,5,6];;
+sort [4,3,2,1];;
+map plustwo [2,2,2,2];;
+map plustwo [2,2,2,2]
+sum [2,3,4,5,2];;
+:load test/solutions.lc
+:quit
+add 0 4 ;;
+add 3 4 ;;
+member 2 [3,2,3] ;;
+plusone 4;;
+:load test/examples.lc
+load test/examples.lc
+:help
