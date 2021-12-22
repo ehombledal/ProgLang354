@@ -7,4 +7,4 @@ Java Instructions: Javac JavaPaperExample.java -> java JavaPaperExample
 C Instructions: gcc CPaperExample.c -o CPaperExample -> ./CPaperExample
 C++ Instructions: g++ CppPaperExample.cpp -o CppPaperExample -> ./CppPaperExample
 Python Instructions: Python3 PythonPaperExample.py
-Haskell Instructions: runhaskell HaskellPaperExample.hs
+Haskell Instructions: ghc -o HaskellPaperExample HaskellPaperExample.hs -> ./HaskellPaperExample
